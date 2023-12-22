@@ -1,0 +1,31 @@
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+# Content Security Policy Header
+Header always set Content-Security-Policy "upgrade-insecure-requests;"
+
+# Rewrite for specific URLs
+<IfModule mod_rewrite.c>
+    RewriteBase /fpielibrary/dashboard
+
+    # Rewrite rule for /profile
+    RewriteRule ^profile$ users-profile.php [L]
+    RewriteRule ^pages-login$ pages-login.php [L]
+    RewriteRule ^pages-register$ pages-register.php [L]
+    RewriteRule ^password-reset$ password-reset.php [L]
+    RewriteRule ^pastquestion$ pastquestion.php [L]
+    RewriteRule ^pdfandnotes$ pdfandnotes.php [L]
+    RewriteRule ^searchresult$ searchresult.php [L]
+    RewriteRule ^textbooks$ textbooks.php [L]
+    RewriteRule ^upload$ upload.php [L]
+    RewriteRule ^forgotten-password$ forgotten-password.php [L]
+
+    # General rewrite rule for clean URLs (assuming you have an index.php)
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>

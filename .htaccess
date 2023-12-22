@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+# Content Security Policy Header
+Header always set Content-Security-Policy "upgrade-insecure-requests;"
+
+# Rewrite for specific URLs
+<IfModule mod_rewrite.c>
+    RewriteBase /fpielibrary/
+
+    # Rewrite rule for /about
+    RewriteRule ^about$ about.php [L]
+
+    # Rewrite rule for /contact
+    RewriteRule ^contact$ contact.php [L]
+
+    # General rewrite rule for clean URLs (assuming you have an index.php)
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>
